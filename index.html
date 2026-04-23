@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Quick Note</title>
+
+<style>
+body { font-family: system-ui; padding:20px; background:#f4f4f4; }
+textarea { width:95%; height:60vh; font-size:18px; padding:15px; }
+
+button {
+    padding:10px 20px;
+    margin-right:10px;
+    border:none;
+    color:white;
+    cursor:pointer;
+}
+
+.save { background:green; }
+.saveas { background:#444; }
+.new { background:blue; }
+.delete { background:red; }
+.load { background:purple; }
+
+</style>
+</head>
+
+<body>
+
+<h2>Quick Note App</h2>
+
+<textarea id="note"></textarea><br><br>
+
+<button class="save" id="save">Save</button>
+<button class="saveas" id="saveAs">Save As</button>
+<button class="new" id="new">New</button>
+<button class="delete" id="delete">Delete All</button>
+<button class="load" id="load">Load Note</button>
+
+<p id="status"></p>
+
+<script src="renderer.js"></script>
+
+</body>
+</html>
