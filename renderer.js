@@ -6,8 +6,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     let lastSaved = '';
 
     // Load on start
-    note.value = await window.api.load();
-    lastSaved = note.value;
 
     // Save
     document.getElementById('save').onclick = async () => {
@@ -66,6 +64,19 @@ window.addEventListener('DOMContentLoaded', async () => {
                 status.innerText = "Auto saved at " + time;
             }
         }, 3000);
+    });
+
+    //  MENU SAVE
+    window.api.onMenuSave(async () => {
+        await window.api.save(note.value);
+        lastSaved = note.value;
+        status.innerText = "Saved from menu!";
+    });
+
+    //  MENU SAVE AS
+    window.api.onMenuSaveAs(async () => {
+        const ok = await window.api.saveAs(note.value);
+        status.innerText = ok ? "Saved as new file!" : "Cancelled";
     });
 
 });

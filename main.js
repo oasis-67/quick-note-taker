@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, Menu } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
@@ -15,6 +15,38 @@ function createWindow() {
     });
 
     win.loadFile('index.html');
+
+    //  MENU ADD
+    const menuTemplate = [
+        {
+            label: 'File',
+            submenu: [
+                {
+                    label: 'Save',
+                    accelerator: 'CmdOrCtrl+S',
+                    click: () => {
+                        win.webContents.send('menu-save');
+                    }
+                },
+                {
+                    label: 'Save As',
+                    accelerator: 'CmdOrCtrl+Shift+S',
+                    click: () => {
+                        win.webContents.send('menu-save-as');
+                    }
+                },
+                { type: 'separator' },
+                {
+                    label: 'Quit',
+                    accelerator: 'CmdOrCtrl+Q',
+                    click: () => app.quit()
+                }
+            ]
+        }
+    ];
+
+    const menu = Menu.buildFromTemplate(menuTemplate);
+    Menu.setApplicationMenu(menu);
 }
 
 app.whenReady().then(() => {
@@ -42,9 +74,16 @@ ipcMain.handle('save-as', async (e, text) => {
 
 // Load
 ipcMain.handle('load-note', async () => {
-    if (fs.existsSync(filePath)) {
+    const result = await dialog.showOpenDialog({
+        properties: ['openFile'],
+        filters: [{ name: 'Text Files', extensions: ['txt'] }]
+    });
+
+    if (!result.canceled && result.filePaths.length > 0) {
+        filePath = result.filePaths[0];
         return fs.readFileSync(filePath, 'utf-8');
     }
+
     return '';
 });
 

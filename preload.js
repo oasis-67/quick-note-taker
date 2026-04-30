@@ -5,5 +5,9 @@ contextBridge.exposeInMainWorld('api', {
     saveAs: (text) => ipcRenderer.invoke('save-as', text),
     load: () => ipcRenderer.invoke('load-note'),
     deleteAll: () => ipcRenderer.invoke('delete-notes'),
-    newNote: () => ipcRenderer.invoke('new-note')
+    newNote: () => ipcRenderer.invoke('new-note'),
+
+    //  MENU EVENTS
+    onMenuSave: (callback) => ipcRenderer.on('menu-save', () => callback()),
+    onMenuSaveAs: (callback) => ipcRenderer.on('menu-save-as', () => callback())
 });
