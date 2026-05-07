@@ -5,14 +5,44 @@
 <title>Quick Note</title>
 
 <style>
-body { font-family: system-ui; padding:20px; background:#f4f4f4; }
-textarea { width:95%; height:60vh; font-size:18px; padding:15px; }
+body { 
+    font-family: system-ui; 
+    padding:20px; 
+
+    background-image: url('image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/*  Glass textarea */
+textarea { 
+    width:95%; 
+    height:60vh; 
+    font-size:18px; 
+    padding:15px;
+
+    background-image: url('inside.jpg');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent; 
+
+    color: black;
+    border: 2px solid orange;
+    outline: none;
+}
+
+/*  Title visible */
+h2 {
+    color: white;
+}
 
 button {
     padding:10px 20px;
     margin-right:10px;
     border:none;
-    color:white;
+    color:rgb(7, 0, 0);
     cursor:pointer;
 }
 
@@ -31,13 +61,15 @@ button {
 
 <textarea id="note"></textarea><br><br>
 
-<button class="save" id="save">Save bhvhgjhgj</button>
+<button class="save" id="save">Save</button>
 <button class="saveas" id="saveAs">Save As</button>
 <button class="new" id="new">New</button>
 <button class="delete" id="delete">Delete All</button>
 <button class="load" id="load">Load Note</button>
 
-<p id="status"></p>
+<p id="status" style="color:white;"></p>
+
+<p id="info" style="color:white; font-size:18px;"></p>
 
 <script src="renderer.js"></script>
 

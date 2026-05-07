@@ -2,12 +2,25 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     const note = document.getElementById('note');
     const status = document.getElementById('status');
+    const info = document.getElementById('info');
 
     let lastSaved = '';
 
+    function updateInfo() {
+
+    const text = note.value;
+
+    const words =
+        text.trim().split(/\s+/).filter(Boolean).length;
+
+    const chars = text.length;
+
+    info.innerText =
+        `Words: ${words} | Characters: ${chars}`;
+}
+
     // Load on start
-    note.value = await window.api.load();
-    lastSaved = note.value;
+
 
     // Save
     document.getElementById('save').onclick = async () => {
@@ -29,6 +42,7 @@ window.addEventListener('DOMContentLoaded', async () => {
             note.value = '';
             lastSaved = '';
             status.innerText = "Deleted!";
+            updateInfo();
         }
     };
 
@@ -42,19 +56,27 @@ window.addEventListener('DOMContentLoaded', async () => {
         note.value = '';
         lastSaved = '';
         status.innerText = "New note started";
+        updateInfo();
     };
 
     // Load Note
-    document.getElementById('load').onclick = async () => {
-        const data = await window.api.load();
-        note.value = data;
-        lastSaved = data;
-        status.innerText = "Note loaded!";
-    };
+   document.getElementById('load').onclick = async () => {
+
+    const data = await window.api.load();
+
+    note.value = data;
+
+    lastSaved = data;
+
+    updateInfo();
+
+    status.innerText = "Note loaded!";
+};
 
     // Auto Save
     let timer;
     note.addEventListener('input', () => {
+        updateInfo();
         clearTimeout(timer);
 
         timer = setTimeout(async () => {
@@ -68,4 +90,23 @@ window.addEventListener('DOMContentLoaded', async () => {
         }, 3000);
     });
 
+  // MENU NEW NOTE
+window.api.onMenuAction('menu-new-note', () => {
+    document.getElementById('new').click();
 });
+
+// MENU OPEN FILE
+window.api.onMenuAction('menu-open-file', () => {
+    document.getElementById('load').click();
+});
+
+// MENU SAVE
+window.api.onMenuAction('menu-save', () => {
+    document.getElementById('save').click();
+});
+
+// MENU SAVE AS
+window.api.onMenuAction('menu-save-as', () => {
+    document.getElementById('saveAs').click();
+});
+    });
