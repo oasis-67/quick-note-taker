@@ -22,24 +22,40 @@ function createWindow() {
             label: 'File',
             submenu: [
                 {
-                    label: 'Save',
-                    accelerator: 'CmdOrCtrl+S',
+                    label: 'New Note',
+                    accelerator: 'CmdOrCtrl+N',
                     click: () => {
-                        win.webContents.send('menu-save');
+                        BrowserWindow.getFocusedWindow().webContents.send('menu-new-note');
                     }
                 },
                 {
-                    label: 'Save As',
+                    label: 'Open File',
+                    accelerator: 'CmdOrCtrl+O',
+                    click: () => {
+                        BrowserWindow.getFocusedWindow().webContents.send('menu-open-file');
+                    }
+                },
+                { type: 'separator' },
+                {
+                    label: 'Save',
+                    accelerator: 'CmdOrCtrl+S',
+                    click: () => {
+                        BrowserWindow.getFocusedWindow().webContents.send('menu-save');
+                    }
+                },
+                {
+
+                label: 'Save as',
                     accelerator: 'CmdOrCtrl+Shift+S',
                     click: () => {
-                        win.webContents.send('menu-save-as');
+                        BrowserWindow.getFocusedWindow().webContents.send('menu-save-as');
                     }
                 },
                 { type: 'separator' },
                 {
                     label: 'Quit',
                     accelerator: 'CmdOrCtrl+Q',
-                    click: () => app.quit()
+                    click: () => app.quit()                                                       
                 }
             ]
         }
