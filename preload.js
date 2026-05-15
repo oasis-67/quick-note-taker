@@ -6,6 +6,8 @@ contextBridge.exposeInMainWorld('api', {
     load: () => ipcRenderer.invoke('load-note'),
     deleteAll: () => ipcRenderer.invoke('delete-notes'),
     newNote: () => ipcRenderer.invoke('new-note'),
+    getNotes: () => ipcRenderer.invoke('get-notes'),
+deleteNote: (id) => ipcRenderer.invoke('delete-note', id),
 
     //  MENU EVENTS
 onMenuAction: (channel, callback) => ipcRenderer.on(channel, callback)

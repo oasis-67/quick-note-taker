@@ -3,6 +3,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     const note = document.getElementById('note');
     const status = document.getElementById('status');
     const info = document.getElementById('info');
+    const notesList = document.getElementById('notesList');
 
     let lastSaved = '';
 
@@ -18,8 +19,54 @@ window.addEventListener('DOMContentLoaded', async () => {
     info.innerText =
         `Words: ${words} | Characters: ${chars}`;
 }
+async function loadNotesList() {
+
+    const notes = await window.api.getNotes();
+
+    notesList.innerHTML = '';
+
+    notes.forEach(n => {
+
+        const div = document.createElement('div');
+
+        div.style.marginBottom = '10px';
+
+        div.innerHTML = `
+            <button style="
+                width:170px;
+                padding:8px;
+                margin-bottom:5px;
+            ">
+                ${n.content.substring(0, 20)}
+            </button>
+
+            <button style="
+                background:red;
+                color:white;
+                padding:8px;
+            ">
+                X
+            </button>
+        `;
+
+        // OPEN NOTE
+        div.children[0].onclick = () => {
+            note.value = n.content;
+            updateInfo();
+        };
+
+        // DELETE NOTE
+        div.children[1].onclick = async () => {
+            await window.api.deleteNote(n.id);
+            loadNotesList();
+        };
+
+        notesList.appendChild(div);
+    });
+}
 
     // Load on start
+    loadNotesList();
 
 
     // Save
@@ -27,6 +74,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         await window.api.save(note.value);
         lastSaved = note.value;
         status.innerText = "Saved!";
+        loadNotesList();
     };
 
     // Save As

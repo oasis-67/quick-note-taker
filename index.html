@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset="UTF-8">
 <title>Quick Note</title>
 
 <style>
-body { 
-    font-family: system-ui; 
-    padding:20px; 
+
+body {
+    font-family: system-ui;
+    padding:20px;
 
     background-image: url('image.jpg');
     background-size: cover;
@@ -15,63 +17,113 @@ body {
     background-repeat: no-repeat;
 }
 
-/*  Glass textarea */
-textarea { 
-    width:95%; 
-    height:60vh; 
-    font-size:18px; 
+/* TEXTAREA */
+textarea {
+    width:95%;
+    height:60vh;
+    font-size:18px;
     padding:15px;
 
     background-image: url('inside.jpg');
     background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
-    background-color: transparent; 
 
-    color: black;
-    border: 2px solid orange;
-    outline: none;
+    background-color: transparent;
+
+    color:black;
+
+    border:2px solid orange;
+    outline:none;
 }
 
-/*  Title visible */
+/* TITLE */
 h2 {
-    color: white;
+    color:white;
 }
 
+/* BUTTONS */
 button {
     padding:10px 20px;
     margin-right:10px;
     border:none;
-    color:rgb(7, 0, 0);
+    color:black;
     cursor:pointer;
 }
 
 .save { background:green; }
-.saveas { background:#444; }
-.new { background:blue; }
-.delete { background:red; }
-.load { background:purple; }
+.saveas { background:#444; color:white; }
+.new { background:blue; color:white; }
+.delete { background:red; color:white; }
+.load { background:purple; color:white; }
+
+/* SIDEBAR */
+#sidebar {
+    width:250px;
+    background:rgba(0,0,0,0.5);
+    padding:10px;
+    color:white;
+    height:80vh;
+    overflow-y:auto;
+    border-radius:10px;
+}
 
 </style>
+
 </head>
 
 <body>
 
-<h2>Quick Note App</h2>
+<div style="display:flex; gap:20px;">
 
-<textarea id="note"></textarea><br><br>
+    <!-- SIDEBAR -->
+    <div id="sidebar">
 
-<button class="save" id="save">Save</button>
-<button class="saveas" id="saveAs">Save As</button>
-<button class="new" id="new">New</button>
-<button class="delete" id="delete">Delete All</button>
-<button class="load" id="load">Load Note</button>
+        <h3>Notes</h3>
 
-<p id="status" style="color:white;"></p>
+        <div id="notesList"></div>
 
-<p id="info" style="color:white; font-size:18px;"></p>
+    </div>
+
+    <!-- MAIN -->
+    <div style="flex:1;">
+
+        <h2>Quick Note App</h2>
+
+        <textarea id="note"></textarea>
+
+        <br><br>
+
+        <button class="save" id="save">Save</button>
+
+        <button class="saveas" id="saveAs">
+            Save As
+        </button>
+
+        <button class="new" id="new">
+            New
+        </button>
+
+        <button class="delete" id="delete">
+            Delete All
+        </button>
+
+        <button class="load" id="load">
+            Load Note
+        </button>
+
+        <p id="status" style="color:white;"></p>
+
+        <p id="info"
+        style="color:white; font-size:18px;">
+        </p>
+
+    </div>
+
+</div>
 
 <script src="renderer.js"></script>
 
 </body>
+
 </html>

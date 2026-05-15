@@ -1,8 +1,25 @@
-const { app, BrowserWindow, ipcMain, dialog, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, Menu, Tray } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
 let filePath;
+let tray;
+function readNotes() {
+
+    if (!fs.existsSync(filePath)) {
+        return [];
+    }
+
+    return JSON.parse(fs.readFileSync(filePath));
+}
+
+function writeNotes(notes) {
+
+    fs.writeFileSync(
+        filePath,
+        JSON.stringify(notes, null, 2)
+    );
+}
 
 function createWindow() {
     const win = new BrowserWindow({
@@ -63,16 +80,61 @@ function createWindow() {
 
     const menu = Menu.buildFromTemplate(menuTemplate);
     Menu.setApplicationMenu(menu);
+    // SYSTEM TRAY
+tray = new Tray(path.join(__dirname, 'iconTemplate.png'));
+
+const trayMenu = Menu.buildFromTemplate([
+    {
+        label: 'Show App',
+        click: () => {
+            win.show();
+        }
+    },
+    {
+        label: 'Quit',
+        click: () => {
+            app.quit();
+        }
+    }
+]);
+
+tray.setToolTip('Quick Note');
+tray.setContextMenu(trayMenu);
+
+// Hide instead of close
+win.on('close', (e) => {
+    e.preventDefault();
+    win.hide();
+});
 }
 
 app.whenReady().then(() => {
-    filePath = path.join(app.getPath('documents'), 'quicknote.txt');
+    filePath = path.join(app.getPath('documents'), 'notes.json');
     createWindow();
 });
 
 // Save
 ipcMain.handle('save-note', async (e, text) => {
-    fs.writeFileSync(filePath, text);
+
+    const notes = readNotes();
+
+    notes.push({
+        id: Date.now(),
+        content: text
+    });
+
+    writeNotes(notes);
+});
+ipcMain.handle('get-notes', async () => {
+    return readNotes();
+});
+ipcMain.handle('delete-note', async (e, id) => {
+
+    let notes = readNotes();
+
+    notes = notes.filter(note => note.id !== id);
+
+    writeNotes(notes);
 });
 
 // Save As
